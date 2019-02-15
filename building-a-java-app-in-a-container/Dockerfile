@@ -10,7 +10,7 @@ RUN mvn clean package
 FROM openjdk:8-jre-alpine
 WORKDIR /app
 COPY --from=1 /app/target/docker-training-demo.jar /app
-ENTRYPOINT ["java -jar docker-training-demo.jar"]
+ENTRYPOINT ["java", "-jar", "/app/docker-training-demo.jar"]
 
-#EXPOSE 8080
-#ENTRYPOINT ["java", "-jar", "/docker-training-demo.jar"]
+# docker build -t building-a-java-app-in-a-container .
+# docker run --detach --publish 8080:8080 --name building-a-java-app-in-a-container building-a-java-app-in-a-container
