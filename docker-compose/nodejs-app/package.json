@@ -1,0 +1,14 @@
+{
+  "name": "hello-kubernetes",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node index.js"
+  },
+  "engines": {
+    "node": "~6.14.3"
+  },
+  "dependencies": {
+    "express": "~4.17.1"
+  }
+}
