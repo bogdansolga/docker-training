@@ -1,0 +1,10 @@
+docker swarm init
+
+docker stack deploy -c docker-stack.yml docker-stack-example
+
+docker stack ls
+
+docker stack ps docker-stack-example
+
+docker ps
+docker stack rm docker-stack-example

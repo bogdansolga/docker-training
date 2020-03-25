@@ -1,0 +1,7 @@
+docker-compose up
+docker image ls
+
+docker-compose up --detach
+docker-compose ps
+docker-compose run java-app
+docker-compose stop
