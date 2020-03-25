@@ -2,7 +2,7 @@ FROM alpine/git AS git
 WORKDIR /app
 RUN git clone https://github.com/bogdansolga/docker-training
 
-FROM maven:3.5-jdk-8-alpine AS maven
+FROM maven:3.6-jdk-8-alpine AS maven
 WORKDIR /app
 COPY --from=git /app/docker-training/docker-training-demo /app
 RUN mvn clean package
