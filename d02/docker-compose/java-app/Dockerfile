@@ -6,4 +6,5 @@ RUN mvn clean package
 FROM openjdk:8-jre-alpine
 WORKDIR /app
 COPY --from=maven /app/target/spring-boot-app.jar /app
+EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "/app/spring-boot-app.jar"]
