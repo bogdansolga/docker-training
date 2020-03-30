@@ -1,0 +1,98 @@
+version: "2.1"
+services:
+  elasticsearch:
+    container_name: elasticsearch
+    hostname: elasticsearch
+    image: "docker.elastic.co/elasticsearch/elasticsearch:7.6.1"
+    logging:
+      options:
+        max-file: "3"
+        max-size: "50m"
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms${ES_JVM_HEAP} -Xmx${ES_JVM_HEAP}"
+      - "ES_JVM_HEAP=128m"
+    mem_limit: 1g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - esdata:/usr/share/elasticsearch/data
+    ports: ['9200:9200']
+    healthcheck:
+      test: ["CMD", "curl","-s" ,"-f", "http://localhost:9200/_cat/health"]
+
+  metricbeat:
+    container_name: metricbeat
+    hostname: metricbeat
+    user: root #To read the docker socket
+    image: "docker.elastic.co/beats/metricbeat:6.8.7"
+    logging:
+      options:
+        max-file: "3"
+        max-size: "50m"
+    volumes:
+      # Mount the metricbeat configuration so users can make edits.
+      - ./metricbeat.yml:/usr/share/metricbeat/metricbeat.yml
+      # Mount the modules.d directory into the container.
+      # This allows user to potentially make changes to the modules and they will be dynamically loaded.
+      - ./modules.d/:/usr/share/metricbeat/modules.d/
+      # The commented sections below enable Metricbeat to monitor the Docker host rather than the Metricbeat container.
+      # These are used by the system module.
+      - /proc:/hostfs/proc:ro
+      - /sys/fs/cgroup:/hostfs/sys/fs/cgroup:ro
+      # Allows us to report on docker from the hosts information.
+      - /var/run/docker.sock:/var/run/docker.sock
+      # mount the host filesystem so we can report on disk usage with the system module.
+      - /:/hostfs:ro
+    command: metricbeat -e -system.hostfs=/hostfs -strict.perms=false
+    restart: on-failure
+    #    environment:
+    #      - "MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}"
+    depends_on:
+      elasticsearch:  { condition: service_healthy }
+
+  grafana:
+    image: grafana/grafana
+    user: "1000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=secure_pass
+    volumes:
+      - ./grafana_db:/var/lib/grafana
+    depends_on:
+      - elasticsearch
+    ports:
+      - '3000:3000'
+
+  reports:
+    image: skedler/reports:latest
+    container_name: reports
+    privileged: true
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+      - reportdata:/var/lib/skedler
+      - ./reporting.yml:/opt/skedler/config/reporting.yml
+    ports:
+      - 3001:3001
+
+volumes:
+  esdata:
+    driver: local
+  reportdata:
+    driver: local
+
+networks:
+  elasticseach:
+    driver: docker-compose_default
+  metricbeat:
+    driver: docker-compose_default
+  grafana:
+    driver: docker-compose_default
+  reports:
+    driver: docker-compose_default
