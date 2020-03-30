@@ -4,7 +4,7 @@ RUN git clone https://github.com/bogdansolga/docker-training
 
 FROM maven:3.6-jdk-8-alpine AS maven
 WORKDIR /app
-COPY --from=git /app/docker-training/docker-training-demo /app
+COPY --from=git /app/docker-training/d01/docker-training-demo /app
 RUN mvn clean package
 
 FROM openjdk:8-jre-alpine
