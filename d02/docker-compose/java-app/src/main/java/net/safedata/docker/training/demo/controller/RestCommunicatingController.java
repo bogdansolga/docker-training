@@ -21,7 +21,7 @@ public class RestCommunicatingController {
 
     @GetMapping("/hello")
     public String localHello() {
-        return "Hello from the Spring Boot app!";
+        return "Hello from the Spring Boot app! [version 2]";
     }
 
     @GetMapping("/hello-from-node")
