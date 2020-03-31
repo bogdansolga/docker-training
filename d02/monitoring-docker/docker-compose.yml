@@ -57,7 +57,7 @@ services:
       elasticsearch:  { condition: service_healthy }
 
   grafana:
-    image: grafana/grafana
+    image: "grafana/grafana"
     user: "1000"
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=secure_pass
@@ -69,7 +69,7 @@ services:
       - '3000:3000'
 
   reports:
-    image: skedler/reports:latest
+    image: "skedler/reports:latest"
     container_name: reports
     privileged: true
     cap_add:
