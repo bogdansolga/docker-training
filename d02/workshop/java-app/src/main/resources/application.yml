@@ -1,0 +1,54 @@
+# the name of the current app
+spring:
+  application:
+    name: docker-workshop
+
+  # DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    name: docker-workshop
+    password: docker-workshop
+    username: docker-workshop
+    url: jdbc:postgresql://${DATABASE_HOST}:5432/${spring.datasource.name}
+
+  # JPA properties - JpaProperties
+  jpa:
+    hibernate:
+      ddl-auto: none # use it carefully, for development only
+
+    database-platform: org.hibernate.dialect.PostgreSQL10Dialect
+
+    properties:
+      hibernate:
+        show_sql: false
+        format_sql: false
+        temp:
+          use_jdbc_metadata_defaults: false
+    open-in-view: false
+
+  # indent the returned JSON responses
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+
+  # the database type
+  sql:
+    init:
+      platform: postgresql
+
+# logging settings
+logging:
+  level:
+    root: info
+    com:
+      zaxxer: warn
+    org:
+      apache: warn
+      # to see the query parameters - change 'sql' to 'debug' and 'type' to 'trace'
+      hibernate: warn
+        #sql: warn
+      #type: warn
+      springframework: warn
+
+  pattern:
+    console: '%clr([%date{HH:mm:ss.SSS}]){faint} %clr(%2p) %clr(%-40.40logger{36}){cyan} %m%n%wex'
