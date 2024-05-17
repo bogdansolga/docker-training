@@ -5,7 +5,7 @@ RUN git clone https://github.com/bogdansolga/docker-training
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS maven
 WORKDIR /app
 COPY --from=git /app/docker-training/d01/docker-training-demo /app
-RUN mvn clean package
+RUN mvn clean package # package = compile + run tests
 
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
