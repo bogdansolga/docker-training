@@ -2,12 +2,12 @@ FROM alpine/git AS git
 WORKDIR /app
 RUN git clone https://github.com/bogdansolga/docker-training
 
-FROM maven:3.6-jdk-8-alpine AS maven
+FROM maven:3.9.6-eclipse-temurin-17-alpine AS maven
 WORKDIR /app
 COPY --from=git /app/docker-training/d01/docker-training-demo /app
 RUN mvn clean package
 
-FROM openjdk:8-jre-alpine
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=maven /app/target/docker-training-demo.jar /app
 ENTRYPOINT ["java", "-jar", "/app/docker-training-demo.jar"]
