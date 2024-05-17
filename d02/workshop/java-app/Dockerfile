@@ -1,6 +1,5 @@
 FROM maven:3.9.6-eclipse-temurin-17-alpine AS maven
-WORKDIR /app
-RUN mvn clean package
+RUN mvn clean package --quiet
 COPY *.jar /app
 
 FROM eclipse-temurin:17-jre-alpine
