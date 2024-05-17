@@ -1,0 +1,12 @@
+services:
+  java-app:
+    build: java-app
+    depends_on:
+      - postgresql-database
+    ports:
+      - "8080:8080"
+
+  postgresql-database:
+    image:
+    ports:
+      - "5432:5432"
