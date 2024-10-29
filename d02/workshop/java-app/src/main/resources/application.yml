@@ -6,9 +6,9 @@ spring:
   # DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
   datasource:
     driver-class-name: org.postgresql.Driver
-    name: docker-workshop
-    password: docker-workshop
-    username: docker-workshop
+    name: docker_workshop
+    password: docker_workshop
+    username: docker_workshop
     url: jdbc:postgresql://${DATABASE_HOST}:5432/${spring.datasource.name}
 
   # JPA properties - JpaProperties
