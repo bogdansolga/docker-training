@@ -5,8 +5,16 @@ services:
       - postgresql-database
     ports:
       - "8080:8080"
+    environment:
+      DATABASE_HOST: a-value-to-be-configured
 
   postgresql-database:
-    image: postgres:13.15
+    image: postgres:17-alpine3.20
     ports:
       - "5432:5432"
+
+# 1. define the volume to be used as the persistent storage for PostgreSQL
+# 2. use the volume in the postgresql service
+# 3. create the database
+# 4. connect the Java app to the database
+# Definition of Done: both containers start successfully
